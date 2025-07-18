@@ -37,7 +37,16 @@ import yaml
 from yaml.loader import SafeLoader
 
 import os 
+import base64
 # os.environ['GROQ_API_KEY'] = st.secrets["GROQ_API_KEY"]
+
+def get_base64_logo():
+    """Convert logo image to base64 for inline display."""
+    try:
+        with open("opaquelogo.png", "rb") as img_file:
+            return base64.b64encode(img_file.read()).decode()
+    except:
+        return ""
 
 # Page configuration
 st.set_page_config(
@@ -141,424 +150,997 @@ console.log("Browser detected:", browser, "- Zoom level set accordingly");
 """
 components.html(zoom_script, height=0)
 
-# Custom CSS
+# Modern Advanced CSS - Clean & Professional Design System
 st.markdown("""
 <style>
-    .main {
-        background-color: #1a2942;  /* Darker blue background */
-        color: #E0E0E0;
+    /* Core Design System */
+    :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --background-gradient: linear-gradient(135deg, #0c1426 0%, #1a2c56 50%, #2d4a78 100%);
+        --card-gradient: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+        --accent-color: #00d4ff;
+        --accent-secondary: #ff6b6b;
+        --text-primary: #ffffff;
+        --text-secondary: #e2e8f0;
+        --text-muted: #94a3b8;
+        --glass-bg: rgba(255, 255, 255, 0.08);
+        --glass-border: rgba(255, 255, 255, 0.15);
+        --shadow-elevated: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --border-radius-lg: 16px;
+        --border-radius-md: 12px;
+        --border-radius-sm: 8px;
     }
+
+    /* Main Application Background */
+    .main {
+        background: var(--background-gradient);
+        color: var(--text-primary);
+        min-height: 100vh;
+        position: relative;
+    }
+    
+    /* Animated background overlay */
+    .main::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(255, 107, 107, 0.1) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: -1;
+    }
+    /* Modern Tab System */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 10px;
+        gap: 12px;
         justify-content: center;
         width: 100%;
-        background-color: #233656;  /* Slightly lighter blue */
-        padding: 10px 0;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 16px;
+        border-radius: var(--border-radius-md);
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow-soft);
+        margin-bottom: 24px;
     }
+    
     .stTabs [data-baseweb="tab"] {
-        height: 50px;
+        height: 48px;
         white-space: pre-wrap;
-        border-radius: 4px 4px 0px 0px;
-        gap: 1px;
-        padding: 10px 20px;
-        background-color: #233656;  /* Matching blue */
-        color: #E0E0E0;
+        border-radius: var(--border-radius-sm);
+        gap: 8px;
+        padding: 12px 24px;
+        background: transparent;
+        color: var(--text-secondary);
         min-width: 120px;
         text-align: center;
         flex-grow: 1;
+        font-weight: 500;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid transparent;
+        position: relative;
+        overflow: hidden;
     }
+    
+    .stTabs [data-baseweb="tab"]::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--primary-gradient);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+    }
+    
+    .stTabs [data-baseweb="tab"]:hover {
+        transform: translateY(-2px);
+        border-color: var(--glass-border);
+        color: var(--text-primary);
+    }
+    
+    .stTabs [data-baseweb="tab"]:hover::before {
+        opacity: 0.1;
+    }
+    
     .stTabs [data-baseweb="tab"][aria-selected="true"] {
-        background-color: #ff8c42;  /* Warm orange for active tab */
-        color: #FFFFFF;
+        background: var(--primary-gradient);
+        color: var(--text-primary);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-soft);
+        border-color: var(--accent-color);
     }
+    
+    .stTabs [data-baseweb="tab"][aria-selected="true"]::before {
+        opacity: 1;
+    }
+    /* Modern Container Styling */
     div[data-testid="stVerticalBlock"] > div:has(div.element-container) {
-        background-color: #1a2942;  /* Matching main background */
-        padding: 0.5rem;
-        border-radius: 10px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 1rem;
+        border-radius: var(--border-radius-md);
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow-soft);
+        transition: all 0.3s ease;
     }
+    
+    div[data-testid="stVerticalBlock"] > div:has(div.element-container):hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-elevated);
+    }
+    
+    /* Modern Metric Cards */
     div.stMetric {
-        background-color: #233656;  /* Consistent blue */
-        padding: 15px;
-        border-radius: 8px;
-        color: #E0E0E0;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 20px;
+        border-radius: var(--border-radius-md);
+        color: var(--text-primary);
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow-soft);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
     }
+    
+    div.stMetric::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--primary-gradient);
+    }
+    
+    div.stMetric:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-elevated);
+        border-color: var(--accent-color);
+    }
+    /* Modern Chat Interface */
     div.chat-message {
-        padding: 1.5rem;
-        border-radius: 0.5rem;
-        margin-bottom: 1rem;
+        padding: 20px;
+        border-radius: var(--border-radius-md);
+        margin-bottom: 16px;
         display: flex;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow-soft);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
     }
+    
+    div.chat-message::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+    }
+    
+    div.chat-message:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-elevated);
+    }
+    
     div.chat-message.user {
-        background-color: #2d4b73;  /* Lighter blue for user messages */
-        color: #E0E0E0;
+        background: rgba(102, 126, 234, 0.15);
+        color: var(--text-primary);
+        border-left: 4px solid var(--accent-color);
     }
+    
+    div.chat-message.user::before {
+        background: var(--primary-gradient);
+    }
+    
     div.chat-message.bot {
-        background-color: #233656;  /* Consistent blue for bot messages */
-        color: #E0E0E0;
+        background: var(--glass-bg);
+        color: var(--text-primary);
+        border-left: 4px solid var(--accent-secondary);
     }
+    
+    div.chat-message.bot::before {
+        background: var(--secondary-gradient);
+    }
+    
     div.chat-avatar {
-        width: 40px;
-        height: 40px;
+        width: 44px;
+        height: 44px;
         border-radius: 50%;
         object-fit: cover;
-        margin-right: 1rem;
+        margin-right: 16px;
+        border: 2px solid var(--glass-border);
+        box-shadow: var(--shadow-soft);
+        transition: all 0.3s ease;
     }
+    
+    div.chat-message:hover div.chat-avatar {
+        transform: scale(1.05);
+        border-color: var(--accent-color);
+    }
+    
     div.chat-content {
         flex-grow: 1;
-        color: #E0E0E0;
+        color: var(--text-primary);
+        line-height: 1.6;
     }
+    
     div.chat-container {
-        height: 400px;
+        height: 420px;
         overflow-y: auto;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        background-color: #1a2942;
-        color: #E0E0E0;
+        padding: 20px;
+        border-radius: var(--border-radius-md);
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        color: var(--text-primary);
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow-soft);
     }
+    
     .avatar-img {
-        width: 40px;
-        height: 40px;
+        width: 44px;
+        height: 44px;
         border-radius: 50%;
         object-fit: cover;
+        border: 2px solid var(--glass-border);
+        transition: all 0.3s ease;
     }
+    /* Modern Weather Cards */
     div.weather-card {
-        background-color: #233656;
-        border-radius: 10px;
-        padding: 20px;
-        color: #E0E0E0;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        background: var(--glass-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-radius: var(--border-radius-lg);
+        padding: 24px;
+        color: var(--text-primary);
+        box-shadow: var(--shadow-elevated);
+        border: 1px solid var(--glass-border);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
     }
+    
+    div.weather-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--card-gradient);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+    }
+    
+    div.weather-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+        border-color: var(--accent-color);
+    }
+    
+    div.weather-card:hover::before {
+        opacity: 1;
+    }
+    
+    /* Enhanced Forecast Cards */
     .daily-forecast-card {
-        background-color: #2d4b73;  /* Lighter blue for cards */
-        border-radius: 8px;
-        padding: 10px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: var(--border-radius-md);
+        padding: 16px;
         text-align: center;
-        transition: transform 0.2s;
-        color: #E0E0E0;
-        border: 1px solid rgba(255, 140, 66, 0.1);  /* Subtle orange border */
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        color: var(--text-primary);
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow-soft);
+        position: relative;
+        overflow: hidden;
     }
+    
+    .daily-forecast-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--primary-gradient);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+    
     .daily-forecast-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 15px rgba(255, 140, 66, 0.2);  /* Orange glow on hover */
+        transform: translateY(-6px) scale(1.02);
+        box-shadow: var(--shadow-elevated);
+        border-color: var(--accent-color);
     }
+    
+    .daily-forecast-card:hover::before {
+        transform: scaleX(1);
+    }
+    
     .hourly-forecast-card {
-        background-color: #2d4b73;
-        border-radius: 8px;
-        padding: 10px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: var(--border-radius-md);
+        padding: 16px;
         text-align: center;
-        transition: transform 0.2s;
-        color: #E0E0E0;
-        border: 1px solid rgba(255, 140, 66, 0.1);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        color: var(--text-primary);
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow-soft);
+        position: relative;
+        overflow: hidden;
     }
+    
+    .hourly-forecast-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--secondary-gradient);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+    
     .hourly-forecast-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 15px rgba(255, 140, 66, 0.2);
+        transform: translateY(-6px) scale(1.02);
+        box-shadow: var(--shadow-elevated);
+        border-color: var(--accent-secondary);
     }
+    
+    .hourly-forecast-card:hover::before {
+        transform: scaleX(1);
+    }
+    /* Modern Pollutant & Metric Cards */
     .pollutant-card {
-        background-color: #34495E;
-        padding: 10px;
-        border-radius: 10px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 16px;
+        border-radius: var(--border-radius-md);
         text-align: center;
-        color: #E0E0E0;
-        margin: 5px;
+        color: var(--text-primary);
+        margin: 6px;
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow-soft);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
     }
+    
+    .pollutant-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--primary-gradient);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+    
+    .pollutant-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-elevated);
+        border-color: var(--accent-color);
+    }
+    
+    .pollutant-card:hover::before {
+        transform: scaleX(1);
+    }
+    
+    /* Enhanced Typography */
     .metric-value {
-        font-size: 24px;
-        font-weight: bold;
-        color: #FFFFFF;
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--accent-color);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        background: var(--primary-gradient);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
+    
     .metric-label {
         font-size: 14px;
-        color: #D3D3D3;
-    }
-    .pollutant-value {
-        font-size: 22px;
-        font-weight: bold;
-        color: #FFFFFF;
-    }
-    .forecast-value {
-        font-size: 20px;
-        font-weight: bold;
-        color: #FFFFFF;
-    }
-    .forecast-label {
-        font-size: 14px;
-        color: #D3D3D3;
-    }
-    .section-title {
-        font-size: 20px;
+        color: var(--text-secondary);
         font-weight: 500;
-        margin-bottom: 15px;
-        color: #F5F6FA;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
     }
-    .location-title {
+    
+    .pollutant-value {
         font-size: 24px;
-        font-weight: bold;
-        color: #E0E0E0;
-        margin-bottom: 10px;
+        font-weight: 700;
+        color: var(--accent-color);
+        margin: 8px 0;
     }
+    
+    .forecast-value {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--accent-color);
+        margin: 4px 0;
+    }
+    
+    .forecast-label {
+        font-size: 13px;
+        color: var(--text-secondary);
+        font-weight: 500;
+        margin: 2px 0;
+    }
+    
+    .section-title {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: var(--text-primary);
+        text-align: center;
+        background: var(--primary-gradient);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .location-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 16px;
+        text-align: center;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    /* Modern Input Fields */
     input.st-text-input > div > input {
-        color: #E0E0E0;  /* Ensure text is visible */
-        background-color: #233656;
-        height: 2rem;  /* Consistent height */
-        padding: 0.25rem 0.5rem;  /* Reduced padding for compactness */
-        vertical-align: middle;  /* Align with button */
-        line-height: normal;  /* Reset line-height to prevent vertical text */
-        white-space: nowrap;  /* Prevent text wrapping */
-        width: 100%;  /* Ensure input takes full available width */
-        font-size: 14px;  /* Reduce font size if needed */
-        border: 1px solid rgba(255, 140, 66, 0.2);
+        color: var(--text-primary);
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        height: 56px;
+        padding: 16px 20px;
+        vertical-align: middle;
+        line-height: 1.5;
+        white-space: nowrap;
+        width: 100%;
+        font-size: 16px;
+        border: 2px solid var(--glass-border);
+        border-radius: var(--border-radius-md);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow-soft);
+        font-weight: 500;
     }
+    
+    input.st-text-input > div > input:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1), var(--shadow-elevated);
+        transform: translateY(-2px);
+        outline: none;
+    }
+    
     input.st-text-input > div > input::placeholder {
-        color: #D3D3D3;  /* Improved contrast for placeholder */
-        opacity: 1;     /* Ensure placeholder is fully visible */
-        font-size: 14px;  /* Match input font size */
+        color: var(--text-muted);
+        opacity: 1;
+        font-size: 16px;
+        font-weight: 400;
     }
+    
+    /* Modern Button Design */
     .stButton > button {
-height: auto;  /* Allow height to adjust based on content */
-min-height: 3rem;  /* Ensure a minimum height for consistency */
-padding: 0.5rem 1rem;  /* Adjust padding for better fit */
-font-size: 12px;  /* Reduce font size to fit text */
-line-height: 1.2;  /* Adjust line height for better text alignment */
-white-space: normal;  /* Allow text to wrap naturally */
-word-wrap: break-word;  /* Ensure long words break to fit */
-display: flex;  /* Use flexbox to center content */
-align-items: center;  /* Center vertically */
-justify-content: center;  /* Center horizontally */
-text-align: center;  /* Ensure text is centered */
-background-color: #ff8c42 !important;
-color: #FFFFFF !important;
-border: none !important;
-transition: all 0.3s ease !important;
-}
-            .main-weather-card {
-    display: flex;
-    flex-direction: column;
-    background-color: #233656;  /* Consistent blue */
-    border-radius: 12px;
-    padding: 15px;
-    margin-bottom: 15px;
-    border: 1px solid rgba(255, 140, 66, 0.15);  /* Subtle orange border */
-}
-
-.weather-primary {
-    display: flex;
-    align-items: center;
-    margin-bottom: 5px;
-}
-
-.temperature-large {
-    font-size: 48px;
-    font-weight: bold;
-    color: #ff8c42;  /* Orange temperature */
-    margin-right: 15px;
-}
-
-.weather-icon-large {
-    font-size: 42px;
-    margin-left: 10px;
-}
-
-.weather-description {
-    display: flex;
-    flex-direction: column;
-}
-
-.weather-condition {
-    font-size: 20px;
-    font-weight: 500;
-    color: #E0E0E0;
-}
-
-.feels-like {
-    font-size: 18px;
-    color: #D3D3D3;
-    margin-top: 4px;
-}
-
-.highlight-metrics-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.highlight-metric-card {
-    display: flex;
-    align-items: center;
-    background-color: #233656;  /* Consistent blue */
-    border-radius: 8px;
-    padding: 10px;
-    border: 1px solid rgba(255, 140, 66, 0.1);
-    position: relative;
-    overflow: hidden;
-}
-
-.highlight-metric-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(255, 140, 66, 0.2);
-}
-
-.highlight-metric-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #ff8c42, #ffd700);  /* Sunrise colors */
-}
-
-.metric-icon {
-    font-size: 24px;
-    margin-right: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 40px;
-}
-
-.metric-details {
-    display: flex;
-    flex-direction: column;
-}
-
-.metric-value {
-    font-size: 20px;
-    font-weight: bold;
-    color: #ff8c42;  /* Orange values */
-}
-
-.metric-name {
-    font-size: 20px; color: #1a1a1a; font-weight: 700;
-}
-
-.section-subtitle {
-    font-size: 18px;
-    font-weight: 500;
-    color: #E0E0E0;
-    margin: 15px 0 10px 0;
-}
-
-.metric-card {
-    background-color: #2d4b73;
-    border-radius: 8px;
-    padding: 15px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
-    transition: transform 0.2s;
-    border: 1px solid rgba(255, 140, 66, 0.1);
-}
-
-.metric-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(255, 140, 66, 0.2);
-}
-
-.metric-card-icon {
-    font-size: 28px;
-    margin-bottom: 5px;
-}
-
-.metric-card-label {
-    font-size: 14px;
-    color: #D3D3D3;
-    margin-bottom: 5px;
-}
-
-.metric-card-value {
-    font-size: 20px;
-    font-weight: bold;
-    color: #ff8c42;  /* Orange values */
-}
-
-.metric-card-sublabel {
-    font-size: 12px;
-    color: #D3D3D3;
-    margin-top: 3px;
-}
-.chart-title {
-    font-size: 22px;
-    font-weight: 600;
-    color: #FFFFFF;
-    text-align: center;
-    margin: 15px 0;
-    background-color: #233656;
-    padding: 8px;
-    border-radius: 6px;
-}
-.weather-details-container {
-    background-color: #233656;
-    padding: 15px;
-    border-radius: 10px;
-    margin-top: 15px;
-    border: 1px solid rgba(255, 140, 66, 0.15);
-} 
-    .highlight-metric-card:nth-child(1) {
-    background: linear-gradient(135deg, #233656 0%, #2d4b73 100%);  /* Blue gradient */
-    border: 1px solid rgba(255, 140, 66, 0.3);  /* Orange border */
-    position: relative;
-    overflow: hidden;
-}
-
-.highlight-metric-card:nth-child(1)::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #ff8c42, #ffd700);  /* Sunrise colors */
-}
-
-.highlight-metric-card:nth-child(2) {
-    background: linear-gradient(135deg, #233656 0%, #1a2942 100%);  /* Darker blue gradient */
-    border: 1px solid rgba(255, 140, 66, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.highlight-metric-card:nth-child(2)::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #ff8c42, #ff6b6b);  /* Sunset colors */
-}
-
-.highlight-metric-card .metric-value {
-    color: #ff8c42;  /* Orange text for consistency */
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.highlight-metric-card .metric-name {
-    color: #E0E0E0;  /* Light text for better contrast */
-    font-size: 16px;
-    font-weight: 500;
-}
-    .highlight-metrics-container {
-        gap: 15px;  /* Increased gap between cards */
+        height: 56px;
+        min-height: 56px;
+        padding: 16px 32px;
+        font-size: 16px;
+        line-height: 1.5;
+        white-space: normal;
+        word-wrap: break-word;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background: var(--primary-gradient) !important;
+        color: var(--text-primary) !important;
+        border: none !important;
+        border-radius: var(--border-radius-md) !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.5px !important;
+        text-transform: uppercase !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: var(--shadow-soft) !important;
+        position: relative !important;
+        overflow: hidden !important;
     }
-    .highlight-metric-card {
-        min-height: 90px;  /* Fixed minimum height */
-        padding: 15px;  /* Increased padding */
+    
+    .stButton > button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s ease;
     }
+    
+    .stButton > button:hover {
+        transform: translateY(-3px) !important;
+        box-shadow: var(--shadow-elevated) !important;
+        filter: brightness(1.1) !important;
+    }
+    
+    .stButton > button:hover::before {
+        left: 100%;
+    }
+    
+    .stButton > button:active {
+        transform: translateY(-1px) !important;
+        box-shadow: var(--shadow-soft) !important;
+    }
+    /* Enhanced Main Weather Card */
     .main-weather-card {
-        min-height: 210px;  /* Fixed height for main card */
+        display: flex;
+        flex-direction: column;
+        background: var(--glass-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-radius: var(--border-radius-lg);
+        padding: 28px;
+        margin-bottom: 24px;
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow-elevated);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        min-height: 240px;
     }
-    /* Adjust icon sizes for better balance */
+    
+    .main-weather-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--card-gradient);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+    }
+    
+    .main-weather-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+        border-color: var(--accent-color);
+    }
+    
+    .main-weather-card:hover::before {
+        opacity: 1;
+    }
+
+    .weather-primary {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+        gap: 20px;
+    }
+
+    .temperature-large {
+        font-size: 64px;
+        font-weight: 800;
+        background: var(--primary-gradient);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        line-height: 1;
+    }
+
+    .weather-icon-large {
+        font-size: 56px;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .weather-description {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .weather-condition {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--text-primary);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .feels-like {
+        font-size: 18px;
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+
+    /* Enhanced Highlight Metrics */
+    .highlight-metrics-container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .highlight-metric-card {
+        display: flex;
+        align-items: center;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: var(--border-radius-md);
+        padding: 20px;
+        border: 1px solid var(--glass-border);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow-soft);
+        min-height: 100px;
+    }
+
+    .highlight-metric-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-elevated);
+        border-color: var(--accent-color);
+    }
+
+    .highlight-metric-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--primary-gradient);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+    
+    .highlight-metric-card:hover::before {
+        transform: scaleX(1);
+    }
+
     .metric-icon {
-        font-size: 28px;
-        min-width: 45px;
+        font-size: 32px;
+        margin-right: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 48px;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
     }
+
+    .metric-details {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
     .metric-value {
+        font-size: 24px;
+        font-weight: 700;
+        background: var(--primary-gradient);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .metric-name {
+        font-size: 16px;
+        color: var(--text-secondary);
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    /* Enhanced Section Styling */
+    .section-subtitle {
         font-size: 20px;
-    } 
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 24px 0 16px 0;
+        text-align: center;
+        background: var(--primary-gradient);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* Enhanced Metric Cards Grid */
+    .metric-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: var(--border-radius-md);
+        padding: 20px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 140px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow-soft);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .metric-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--primary-gradient);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+
+    .metric-card:hover {
+        transform: translateY(-6px) scale(1.02);
+        box-shadow: var(--shadow-elevated);
+        border-color: var(--accent-color);
+    }
+    
+    .metric-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .metric-card-icon {
+        font-size: 36px;
+        margin-bottom: 12px;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    .metric-card-label {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin-bottom: 8px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    .metric-card-value {
+        font-size: 24px;
+        font-weight: 700;
+        background: var(--primary-gradient);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1;
+    }
+
+    .metric-card-sublabel {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-top: 4px;
+        font-weight: 500;
+    }
+    /* Enhanced Chart Styling */
+    .chart-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--text-primary);
+        text-align: center;
+        margin: 24px 0;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 16px;
+        border-radius: var(--border-radius-md);
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow-soft);
+        background: var(--primary-gradient);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .weather-details-container {
+        background: var(--glass-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        padding: 24px;
+        border-radius: var(--border-radius-lg);
+        margin-top: 24px;
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow-elevated);
+        transition: all 0.3s ease;
+    }
+    
+    .weather-details-container:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+        border-color: var(--accent-color);
+    }
+    
+    /* Enhanced Gradient Styles for Special Cards */
+    .highlight-metric-card:nth-child(1) {
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .highlight-metric-card:nth-child(1)::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--primary-gradient);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+    
+    .highlight-metric-card:nth-child(1):hover::before {
+        transform: scaleX(1);
+    }
+
+    .highlight-metric-card:nth-child(2) {
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .highlight-metric-card:nth-child(2)::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--secondary-gradient);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+    
+    .highlight-metric-card:nth-child(2):hover::before {
+        transform: scaleX(1);
+    }
+
+    .highlight-metric-card .metric-value {
+        background: var(--primary-gradient);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    .highlight-metric-card .metric-name {
+        color: var(--text-secondary);
+        font-size: 16px;
+        font-weight: 600;
+    }
+    
+    /* Responsive Enhancements */
+    @media (max-width: 768px) {
+        .temperature-large {
+            font-size: 48px;
+        }
+        
+        .weather-icon-large {
+            font-size: 40px;
+        }
+        
+        .main-weather-card {
+            padding: 20px;
+            min-height: 200px;
+        }
+        
+        .metric-card {
+            height: 120px;
+            padding: 16px;
+        }
+        
+        .chart-title {
+            font-size: 24px;
+        }
+    }
+    
+    /* Loading Animation */
+    @keyframes modernSpin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    .loading-spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: var(--accent-color);
+        animation: modernSpin 1s ease-in-out infinite;
+    }
+    
+    /* Enhanced Alert Styling */
+    .stAlert {
+        background: var(--glass-bg) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        border: 1px solid var(--glass-border) !important;
+        border-radius: var(--border-radius-md) !important;
+        box-shadow: var(--shadow-soft) !important;
+        color: var(--text-primary) !important;
+    }
+    
+    /* Modern Form Styling */
+    .stForm {
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--border-radius-md);
+        box-shadow: var(--shadow-soft);
+        padding: 0 !important;
+    }
+    
+    /* Enhanced Selectbox */
+    .stSelectbox > div > div {
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 2px solid var(--glass-border);
+        border-radius: var(--border-radius-md);
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+    }
+    
+    .stSelectbox > div > div:hover {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+    }
 
 </style>
 """, unsafe_allow_html=True)
@@ -676,25 +1258,124 @@ def fetch_air_quality(lat, lon):
 def get_all_weather_data(location_name):
     """Get coordinates, current weather, forecast, and air quality data."""
     try:
-        lat, lon = get_coordinates(location_name)
-        if lat is None or lon is None:
-            return None
-            
-        current_data = fetch_current_weather(lat, lon)
-        forecast_data = fetch_forecast_weather(lat, lon)
-        air_quality_data = fetch_air_quality(lat, lon)
+        # For demo purposes, always return demo data
+        return get_demo_weather_data(location_name)
         
-        return {
-            "location": location_name,
-            "latitude": lat,
-            "longitude": lon,
-            "current": current_data,
-            "forecast": forecast_data,
-            "air_quality": air_quality_data
-        }
+        # Original implementation (commented for demo)
+        # lat, lon = get_coordinates(location_name)
+        # if lat is None or lon is None:
+        #     return None
+        #     
+        # current_data = fetch_current_weather(lat, lon)
+        # forecast_data = fetch_forecast_weather(lat, lon)
+        # air_quality_data = fetch_air_quality(lat, lon)
+        # 
+        # return {
+        #     "location": location_name,
+        #     "latitude": lat,
+        #     "longitude": lon,
+        #     "current": current_data,
+        #     "forecast": forecast_data,
+        #     "air_quality": air_quality_data
+        # }
     except Exception as e:
         st.error(f"Error fetching weather data: {e}")
         return None
+    """Generate demo weather data for UI demonstration."""
+    from datetime import datetime, timedelta
+    import random
+    
+    # Generate demo current weather
+    current_time = datetime.now().isoformat()
+    demo_data = {
+        "location": location_name,
+        "latitude": random.uniform(40, 50),
+        "longitude": random.uniform(-74, -73),
+        "current": {
+            "current_units": {
+                "temperature_2m": "°C",
+                "relative_humidity_2m": "%",
+                "apparent_temperature": "°C",
+                "precipitation": "mm",
+                "rain": "mm",
+                "windspeed_10m": "km/h",
+                "winddirection_10m": "°",
+                "pressure_msl": "hPa",
+                "visibility": "m",
+                "uv_index": "",
+                "cloudcover": "%"
+            },
+            "current": {
+                "time": current_time,
+                "temperature_2m": random.randint(15, 25),
+                "relative_humidity_2m": random.randint(45, 75),
+                "apparent_temperature": random.randint(14, 26),
+                "precipitation": round(random.uniform(0, 2), 1),
+                "rain": round(random.uniform(0, 1), 1),
+                "weathercode": random.choice([0, 1, 2, 3, 61, 63]),
+                "cloudcover": random.randint(20, 80),
+                "windspeed_10m": round(random.uniform(5, 15), 1),
+                "winddirection_10m": random.randint(0, 360),
+                "pressure_msl": random.randint(1010, 1025),
+                "visibility": random.randint(8000, 15000),
+                "uv_index": random.randint(3, 8)
+            }
+        },
+        "forecast": {
+            "daily_units": {
+                "temperature_2m_max": "°C",
+                "temperature_2m_min": "°C",
+                "precipitation_sum": "mm",
+                "windspeed_10m_max": "km/h"
+            },
+            "daily": {
+                "time": [(datetime.now() + timedelta(days=i)).isoformat()[:10] for i in range(7)],
+                "temperature_2m_max": [random.randint(20, 30) for _ in range(7)],
+                "temperature_2m_min": [random.randint(10, 18) for _ in range(7)],
+                "precipitation_sum": [round(random.uniform(0, 5), 1) for _ in range(7)],
+                "weathercode": [random.choice([0, 1, 2, 3, 61, 63]) for _ in range(7)],
+                "windspeed_10m_max": [round(random.uniform(8, 20), 1) for _ in range(7)],
+                "sunrise": [(datetime.now() + timedelta(days=i)).replace(hour=6, minute=30).isoformat() for i in range(7)],
+                "sunset": [(datetime.now() + timedelta(days=i)).replace(hour=19, minute=45).isoformat() for i in range(7)]
+            },
+            "hourly_units": {
+                "temperature_2m": "°C",
+                "precipitation_probability": "%",
+                "cloudcover": "%",
+                "windspeed_10m": "km/h"
+            },
+            "hourly": {
+                "time": [(datetime.now() + timedelta(hours=i)).isoformat() for i in range(24)],
+                "temperature_2m": [random.randint(15, 25) for _ in range(24)],
+                "precipitation_probability": [random.randint(0, 40) for _ in range(24)],
+                "weathercode": [random.choice([0, 1, 2, 3]) for _ in range(24)],
+                "cloudcover": [random.randint(20, 80) for _ in range(24)],
+                "windspeed_10m": [round(random.uniform(5, 15), 1) for _ in range(24)]
+            }
+        },
+        "air_quality": {
+            "hourly_units": {
+                "pm2_5": "µg/m³",
+                "pm10": "µg/m³",
+                "nitrogen_dioxide": "µg/m³",
+                "sulphur_dioxide": "µg/m³",
+                "ozone": "µg/m³",
+                "carbon_monoxide": "µg/m³",
+                "european_aqi": ""
+            },
+            "hourly": {
+                "time": [(datetime.now() + timedelta(hours=i)).isoformat() for i in range(24)],
+                "pm2_5": [round(random.uniform(10, 30), 1) for _ in range(24)],
+                "pm10": [round(random.uniform(15, 40), 1) for _ in range(24)],
+                "nitrogen_dioxide": [round(random.uniform(20, 60), 1) for _ in range(24)],
+                "sulphur_dioxide": [round(random.uniform(5, 15), 1) for _ in range(24)],
+                "ozone": [round(random.uniform(80, 120), 1) for _ in range(24)],
+                "carbon_monoxide": [round(random.uniform(200, 400), 1) for _ in range(24)],
+                "european_aqi": [random.randint(25, 75) for _ in range(24)]
+            }
+        }
+    }
+    return demo_data
 
 # Weather Code to Description Mapping
 def get_weather_description(code):
@@ -1748,29 +2429,50 @@ def display_chat_agent():
     if "weather_data" in st.session_state and st.session_state.weather_data:
         current_location = st.session_state.weather_data["location"]
         
+        # Enhanced quick action buttons with modern styling
+        st.markdown("""
+        <div style='
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--border-radius-md);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-soft);
+        '>
+            <h4 style='
+                text-align: center;
+                margin-bottom: 1rem;
+                color: var(--text-primary);
+                font-size: 1.1rem;
+                font-weight: 600;
+            '>⚡ Quick Actions</h4>
+        </div>
+        """, unsafe_allow_html=True)
         
         # Create compact layout for buttons with minimal spacing
         col1, col2 = st.columns([1, 1], gap="small")
         
         with col1:
-            if st.button(f"🕒 \nHourly\nForecast", key="hourly_btn",use_container_width=True):
+            if st.button("🕒\nHourly\nForecast", key="hourly_btn", use_container_width=True, type="secondary"):
                 query = f"Show me the hourly forecast for {current_location}"
                 process_query(query)
                 
         with col2:
-            if st.button(f"📅 \n7-Day  \nOutlook", key="daily_btn",use_container_width=True):
+            if st.button("📅\n7-Day\nOutlook", key="daily_btn", use_container_width=True, type="secondary"):
                 query = f"What's the weekly forecast for {current_location}?"
                 process_query(query)
                 
         col1, col2 = st.columns([1, 1], gap="small")
         
         with col1:
-            if st.button(f"⚠️\nWeather  \nAlerts", key="alerts_btn",use_container_width=True):
+            if st.button("⚠️\nWeather\nAlerts", key="alerts_btn", use_container_width=True, type="secondary"):
                 query = f"Are there any weather warnings or hazards I should know about in {current_location}?"
                 process_query(query)
                 
         with col2:
-            if st.button(f"👗\nClothing\nAdvice", key="clothing_btn",use_container_width=True):
+            if st.button("👗\nClothing\nAdvice", key="clothing_btn", use_container_width=True, type="secondary"):
                 query = f"What should I wear today in {current_location}?"
                 process_query(query)
                 
@@ -1781,39 +2483,118 @@ def display_chat_agent():
 
 # Main Application
 def main():
-    # Header with logo
-    col1, col2, col3 = st.columns([1, 3, 1])  # Adjust column ratios as needed
-    logo = r"opaquelogo.png"  # Ensure correct path
-    with col1:
-        st.image(logo, width=300)  # Logo on the left
-    with col2:
-        st.markdown("""
-        <div style='text-align: center; margin-bottom: 2rem;'>
-            <h1 style='color: #E0E0E0;'>Weather Companion</h1>
-            <!--<p style='color: #D3D3D3;'>Real-time weather insights and forecasts</p>-->
-        </div>
-        """, unsafe_allow_html=True)
-    with col3:
-        st.empty()  # Placeholder to balance the layout
-    
-    # Input form with button on the right
-    with st.form(key="location_form"):
-        st.markdown("""
-        <div style='display: flex; align-items: center; gap: 10px; padding: 0.25rem 0.5rem; background-color: #1E293B; border-radius: 8px;'>
-            <div style='flex: 1;'>
-                """, unsafe_allow_html=True)
-        location = st.text_input("Location Input", 
-    placeholder="Enter location name to get the weather details...",label_visibility="collapsed")
-
-        st.markdown("""
-            </div>
+    # Modern Enhanced Header with glassmorphism effect
+    st.markdown("""
+    <div style='
+        text-align: center; 
+        margin-bottom: 3rem;
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: var(--border-radius-lg);
+        padding: 2rem;
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow-elevated);
+        position: relative;
+        overflow: hidden;
+    '>
+        <div style='
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 2rem;
+            flex-wrap: wrap;
+        '>
+            <img src="data:image/png;base64,{}" style='
+                width: 80px; 
+                height: 80px; 
+                border-radius: 50%; 
+                border: 3px solid var(--glass-border);
+                box-shadow: var(--shadow-soft);
+                transition: all 0.3s ease;
+            ' />
             <div>
-                """, unsafe_allow_html=True)
-        submit_button = st.form_submit_button(label="Get Weather")
-        st.markdown("""
+                <h1 style='
+                    background: var(--primary-gradient);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    font-size: 3.5rem;
+                    font-weight: 800;
+                    margin: 0;
+                    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+                    letter-spacing: -1px;
+                '>Weather Companion</h1>
+                <p style='
+                    color: var(--text-secondary);
+                    font-size: 1.2rem;
+                    margin: 0.5rem 0 0 0;
+                    font-weight: 500;
+                    opacity: 0.9;
+                '>Advanced Weather Intelligence & Forecasting</p>
             </div>
         </div>
-        """, unsafe_allow_html=True)
+        <div style='
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+        '></div>
+    </div>
+    """.format(get_base64_logo()), unsafe_allow_html=True)
+    
+    # Modern Enhanced Input Form
+    st.markdown("""
+    <div style='
+        background: var(--glass-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-radius: var(--border-radius-lg);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow-elevated);
+        position: relative;
+        overflow: hidden;
+    '>
+        <div style='
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--secondary-gradient);
+        '></div>
+        <h3 style='
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1.3rem;
+        '>🌍 Enter Location for Weather Information</h3>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Input form with enhanced styling
+    with st.form(key="location_form"):
+        col1, col2 = st.columns([4, 1])
+        
+        with col1:
+            location = st.text_input(
+                "Location Input", 
+                placeholder="Enter city name, address, or coordinates...",
+                label_visibility="collapsed",
+                help="Try entering: New York, London, Tokyo, or any city name"
+            )
+        
+        with col2:
+            submit_button = st.form_submit_button(
+                label="🔍 Search", 
+                use_container_width=True,
+                type="primary"
+            )
     
     # Layout columns
     col1, col2 = st.columns([3, 1])
