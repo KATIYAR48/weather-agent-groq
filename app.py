@@ -1,5 +1,5 @@
 # Standard Library Imports
-from datetime import datetime
+from datetime import datetime, timedelta
 import time
 import uuid
 import json
@@ -2601,13 +2601,99 @@ def main():
     
     with col1:
         if submit_button:
-            with st.spinner("Fetching weather data..."):
-                weather_data = get_all_weather_data(location)
-                if weather_data:
-                    st.session_state.weather_data = weather_data
-                    st.session_state.show_weather = True
-                else:
-                    st.session_state.show_weather = False
+            # Show modern loading state
+            with st.spinner("🌤️ Fetching weather data..."):
+                # Use demo data for UI demonstration
+                demo_data = {
+                    "location": location,
+                    "latitude": 40.7128,
+                    "longitude": -74.0060,
+                    "current": {
+                        "current_units": {
+                            "temperature_2m": "°C",
+                            "relative_humidity_2m": "%",
+                            "apparent_temperature": "°C",
+                            "precipitation": "mm",
+                            "rain": "mm",
+                            "windspeed_10m": "km/h",
+                            "winddirection_10m": "°",
+                            "pressure_msl": "hPa",
+                            "visibility": "m",
+                            "uv_index": "",
+                            "cloudcover": "%"
+                        },
+                        "current": {
+                            "time": datetime.now().isoformat(),
+                            "temperature_2m": 22,
+                            "relative_humidity_2m": 65,
+                            "apparent_temperature": 24,
+                            "precipitation": 0.1,
+                            "rain": 0.0,
+                            "weathercode": 1,
+                            "cloudcover": 45,
+                            "windspeed_10m": 8.5,
+                            "winddirection_10m": 225,
+                            "pressure_msl": 1018,
+                            "visibility": 12000,
+                            "uv_index": 6
+                        }
+                    },
+                    "forecast": {
+                        "daily_units": {
+                            "temperature_2m_max": "°C",
+                            "temperature_2m_min": "°C",
+                            "precipitation_sum": "mm",
+                            "windspeed_10m_max": "km/h"
+                        },
+                        "daily": {
+                            "time": [(datetime.now() + timedelta(days=i)).isoformat()[:10] for i in range(7)],
+                            "temperature_2m_max": [25, 23, 27, 24, 26, 22, 25],
+                            "temperature_2m_min": [15, 13, 17, 14, 16, 12, 15],
+                            "precipitation_sum": [0.5, 2.1, 0.0, 1.2, 0.3, 3.5, 0.8],
+                            "weathercode": [1, 61, 0, 3, 2, 63, 1],
+                            "windspeed_10m_max": [12.5, 15.2, 8.1, 18.3, 11.7, 22.1, 14.8],
+                            "sunrise": [(datetime.now() + timedelta(days=i)).replace(hour=6, minute=30).isoformat() for i in range(7)],
+                            "sunset": [(datetime.now() + timedelta(days=i)).replace(hour=19, minute=45).isoformat() for i in range(7)]
+                        },
+                        "hourly_units": {
+                            "temperature_2m": "°C",
+                            "precipitation_probability": "%",
+                            "cloudcover": "%",
+                            "windspeed_10m": "km/h"
+                        },
+                        "hourly": {
+                            "time": [(datetime.now() + timedelta(hours=i)).isoformat() for i in range(24)],
+                            "temperature_2m": [22, 21, 20, 19, 18, 17, 18, 19, 21, 23, 25, 26, 27, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18],
+                            "precipitation_probability": [10, 15, 20, 25, 30, 35, 30, 25, 20, 15, 10, 5, 0, 0, 5, 10, 15, 20, 25, 30, 35, 40, 35, 30],
+                            "weathercode": [1, 2, 2, 3, 3, 45, 3, 2, 1, 0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 61, 61, 63, 3, 2],
+                            "cloudcover": [45, 50, 55, 60, 65, 70, 65, 60, 55, 40, 30, 25, 20, 15, 25, 35, 45, 55, 65, 75, 80, 85, 75, 60],
+                            "windspeed_10m": [8.5, 9.1, 9.8, 10.2, 11.5, 12.8, 11.9, 10.6, 9.3, 8.7, 7.2, 6.8, 7.5, 8.9, 10.1, 11.3, 12.7, 13.2, 14.1, 15.8, 16.2, 14.9, 12.3, 10.7]
+                        }
+                    },
+                    "air_quality": {
+                        "hourly_units": {
+                            "pm2_5": "µg/m³",
+                            "pm10": "µg/m³",
+                            "nitrogen_dioxide": "µg/m³",
+                            "sulphur_dioxide": "µg/m³",
+                            "ozone": "µg/m³",
+                            "carbon_monoxide": "µg/m³",
+                            "european_aqi": ""
+                        },
+                        "hourly": {
+                            "time": [(datetime.now() + timedelta(hours=i)).isoformat() for i in range(24)],
+                            "pm2_5": [15.2, 18.7, 22.1, 19.8, 16.3, 14.9, 13.2, 12.8, 15.6, 18.9, 21.4, 24.7, 22.3, 19.1, 17.8, 20.2, 23.5, 25.8, 27.1, 24.9, 21.6, 18.3, 16.7, 14.2],
+                            "pm10": [28.5, 32.1, 35.7, 31.2, 27.8, 25.4, 23.9, 22.6, 26.3, 30.8, 34.2, 37.9, 35.1, 31.7, 29.4, 33.6, 38.2, 41.5, 43.8, 40.1, 35.9, 31.2, 28.7, 25.3],
+                            "nitrogen_dioxide": [42.3, 38.7, 35.1, 41.8, 45.2, 39.6, 36.4, 33.9, 37.2, 41.5, 44.8, 48.3, 45.7, 42.1, 38.9, 43.6, 47.9, 51.2, 53.8, 49.4, 44.7, 40.2, 37.6, 34.8],
+                            "sulphur_dioxide": [8.2, 7.9, 8.5, 9.1, 8.7, 7.3, 6.8, 6.4, 7.1, 8.6, 9.4, 10.2, 9.8, 8.9, 7.7, 9.3, 10.8, 11.5, 12.1, 11.2, 9.6, 8.4, 7.8, 7.2],
+                            "ozone": [95.3, 92.7, 88.1, 91.8, 96.2, 102.4, 105.7, 108.3, 103.9, 98.2, 94.6, 89.7, 92.4, 97.8, 101.2, 104.5, 107.9, 110.3, 108.7, 105.1, 100.8, 96.4, 93.2, 89.8],
+                            "carbon_monoxide": [285.7, 298.3, 312.6, 305.1, 291.8, 278.4, 265.9, 254.2, 267.8, 283.5, 299.7, 316.4, 308.9, 295.6, 281.3, 302.7, 325.8, 348.2, 361.5, 342.9, 318.6, 294.7, 276.8, 259.3],
+                            "european_aqi": [45, 52, 58, 54, 48, 42, 38, 35, 41, 49, 56, 63, 59, 52, 46, 55, 64, 71, 75, 68, 59, 50, 44, 39]
+                        }
+                    }
+                }
+                st.session_state.weather_data = demo_data
+                st.session_state.show_weather = True
         
         # Initialize the session state variable if it doesn't exist
         if "show_weather" not in st.session_state:
