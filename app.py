@@ -48,16 +48,17 @@ st.set_page_config(
     )
 
 
-config_yaml = st.secrets["config"]
-config = yaml.safe_load(config_yaml)
+# Temporarily disabled authentication for UI development
+# config_yaml = st.secrets["config"]
+# config = yaml.safe_load(config_yaml)
 
-authenticator = stauth.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days'],
-    auto_hash=False  # Important since you've pre-hashed the passwords
-)
+# authenticator = stauth.Authenticate(
+#     config['credentials'],
+#     config['cookie']['name'],
+#     config['cookie']['key'],
+#     config['cookie']['expiry_days'],
+#     auto_hash=False  # Important since you've pre-hashed the passwords
+# )
 
 
 # Set a flag in session_state to track whether the API key has been provided
